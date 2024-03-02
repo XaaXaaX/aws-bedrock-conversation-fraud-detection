@@ -5,6 +5,7 @@ import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { NestedStack, NestedStackProps } from "aws-cdk-lib";
 import { ITable } from 'aws-cdk-lib/aws-dynamodb';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
+import { BedrockModelRequestHelper } from './bedrock/models-request-helper';
 
 export interface StateMachineStackProps extends NestedStackProps {
   Table: ITable;
@@ -79,10 +80,10 @@ class StateMachineStack extends NestedStack {
         modelArn: props.modelArn,
       },
       body: TaskInput.fromObject(
-        {
-          inputText: JsonPath.stringAt('$.output'),
-        },
-      ),
+        BedrockModelRequestHelper.RequestForModel(
+          props.modelArn,
+          JsonPath.stringAt('$.output'),
+      ))
     }));
 
     const stateMachine = new StateMachine(this, 'ConversationStateMachine', {

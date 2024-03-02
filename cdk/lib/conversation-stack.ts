@@ -6,7 +6,6 @@ import { CfnPipe } from 'aws-cdk-lib/aws-pipes';
 import { StateMachineStack } from './state-machine-stack';
 import { PromptBucketStack } from './prompt-bucket-stack';
 import { ConversationTableStack } from './conversation-table-stack';
-
 class ConversationStack extends Stack {
   private conversationTable: ConversationTableStack;
   private promptBucket: PromptBucketStack;
@@ -19,7 +18,7 @@ class ConversationStack extends Stack {
     this.modelArn = Stack.of(this).formatArn({
       service: 'bedrock',
       resource: 'foundation-model',
-      resourceName: 'amazon.titan-text-lite-v1',
+      resourceName: 'mistral.mistral-7b-instruct-v0:2',
       region: REGION,
       account: '',
     });
